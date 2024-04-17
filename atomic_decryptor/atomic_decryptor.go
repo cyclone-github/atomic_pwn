@@ -20,11 +20,14 @@ import (
 
 /*
 Cyclone's Atomic Vault Decryptor
+https://github.com/cyclone-github/atomic_pwn
 POC tool to decrypt Atomic vault wallets
-This tool is proudly the first Atomic Vault decryptor / cracker
+This tool is proudly the first Atomic Vault Decryptor / Cracker
 coded by cyclone in Go
+many thanks to blandyuk for his help with the AES Key and IV implementation - https://github.com/blandyuk
 
 GNU General Public License v2.0
+https://github.com/cyclone-github/atomic_pwn/blob/main/LICENSE
 
 version history
 v0.1.0-2024-04-16; initial release
@@ -46,7 +49,7 @@ func clearScreen() {
 
 // version func
 func versionFunc() {
-	fmt.Fprintln(os.Stderr, "Cyclone's Atomic Vault Decryptor v0.1.0-2024-04-16")
+	fmt.Fprintln(os.Stderr, "Cyclone's Atomic Vault Decryptor v0.1.0-2024-04-16\nhttps://github.com/cyclone-github/atomic_pwn\n")
 }
 
 // help func
@@ -206,7 +209,13 @@ func startWorker(ch <-chan string, stopChan chan struct{}, vaults []AtomicVault,
 		case password, ok := <-ch:
 			if !ok {
 				time.Sleep(100 * time.Millisecond)
-				close(stopChan) // channel closed, no more passwords to process
+				select {
+				case <-stopChan:
+					// channel already closed, do nothing
+				default:
+					// close stop channel to signal all workers to stop
+					close(stopChan)
+				}
 				return
 			}
 			allDecrypted := true
@@ -394,7 +403,6 @@ func main() {
 		defer func() {
 			for _, ch := range workerChannels {
 				close(ch) // close all worker channels when done
-				return
 			}
 		}()
 		defer wg.Done()
@@ -406,12 +414,20 @@ func main() {
 		}
 		defer wordlistFile.Close()
 
+		const bufferSize = 50 * 1024 * 1024 // read buffer
+		buffer := make([]byte, bufferSize)
 		scanner := bufio.NewScanner(wordlistFile)
+		scanner.Buffer(buffer, bufferSize) // Set the custom buffer size
+
 		workerIndex := 0
 		for scanner.Scan() {
 			word := strings.TrimRight(scanner.Text(), "\n")
 			workerChannels[workerIndex] <- word
 			workerIndex = (workerIndex + 1) % len(workerChannels) // round-robin
+		}
+
+		if err := scanner.Err(); err != nil {
+			fmt.Fprintln(os.Stderr, "Error reading from wordlist file:", err)
 		}
 	}()
 
