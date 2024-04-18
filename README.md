@@ -14,17 +14,28 @@ CPU Threads:    16
 Wordlist:       wordlist.txt
 Working...
 
-Decrypted: 0/1  819641.86 h/s     00h:01m:00s
+Decrypted: 0/1  2400342.75 h/s     00h:01m:00s
 ```
 
 ### Output example:
 If the tool successfully decrypts the vault, tool will print the vault password and decrypted vault.
 
+### Credits
+Many thanks to blandyuk for his help with the AES Key and IV implementation - https://github.com/blandyuk
+
 ### Compile from source:
 - If you want the latest features, compiling from source is the best option since the release version may run several revisions behind the source code.
 - This assumes you have Go and Git installed
   - `git clone https://github.com/cyclone-github/atomic_pwn.git`
-  - `cd atomic_pwn`
-  - TBA
+  - atomic_extractor
+  - `cd atomic_pwn/atomic_extractor`
+  - `go mod init atomic_extractor`
+  - `go mod tidy`
+  - `go build -ldflags="-s -w" atomic_extractor.go`
+  - atomic_decryptor
+  - `cd atomic_pwn/atomic_decryptor`
+  - `go mod init atomic_decryptor`
+  - `go mod tidy`
+  - `go build -ldflags="-s -w" atomic_decryptor.go`
 - Compile from source code how-to:
   - https://github.com/cyclone-github/scripts/blob/main/intro_to_go.txt
