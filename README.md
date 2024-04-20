@@ -4,9 +4,9 @@ _**This tool is proudly the first publicly released Atomic Vault extractor / dec
 ### Usage example:
 ```
 ./atomic_decryptor_amd64.bin -h atomic.txt -w wordlist.txt
- ------------------------------------ 
+ ---------------------------------- 
 | Cyclone's Atomic Vault Decryptor |
- ------------------------------------ 
+ ---------------------------------- 
 
 Vault file:     atomic.txt
 Valid Vaults:   1
@@ -21,7 +21,7 @@ Decrypted: 0/1  2400342.75 h/s     00h:01m:00s
 If the tool successfully decrypts the vault, tool will print the vault password and decrypted vault.
 
 ### Credits
-Many thanks to blandyuk for his help with the AES Key and IV implementation - https://github.com/blandyuk
+- Many thanks to blandyuk for his help with the AES Key and IV implementation - https://github.com/blandyuk
 
 ### Compile from source:
 - If you want the latest features, compiling from source is the best option since the release version may run several revisions behind the source code.
