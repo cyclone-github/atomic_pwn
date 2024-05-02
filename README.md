@@ -5,9 +5,10 @@ _**This tool is proudly the first publicly released Atomic Vault extractor / dec
 ### Usage example:
 ```
 ./atomic_decryptor_amd64.bin -h atomic.txt -w wordlist.txt
- ---------------------------------- 
-| Cyclone's Atomic Vault Decryptor |
- ---------------------------------- 
+ ----------------------------------------------- 
+|       Cyclone's Atomic Vault Decryptor       |
+| https://github.com/cyclone-github/atomic_pwn |
+ ----------------------------------------------- 
 
 Vault file:     atomic.txt
 Valid Vaults:   1
@@ -32,11 +33,11 @@ If the tool successfully decrypts the vault, tool will print the vault password 
   - `cd atomic_pwn/atomic_extractor`
   - `go mod init atomic_extractor`
   - `go mod tidy`
-  - `go build -ldflags="-s -w" atomic_extractor.go`
+  - `go build -ldflags="-s -w" .`
   - atomic_decryptor
   - `cd atomic_pwn/atomic_decryptor`
   - `go mod init atomic_decryptor`
   - `go mod tidy`
-  - `go build -ldflags="-s -w" atomic_decryptor.go`
+  - `go build -ldflags="-s -w" .`
 - Compile from source code how-to:
   - https://github.com/cyclone-github/scripts/blob/main/intro_to_go.txt
