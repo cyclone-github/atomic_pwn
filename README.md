@@ -1,7 +1,14 @@
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=cyclone-github&repo=atomic_pwn&theme=gruvbox)](https://github.com/cyclone-github/)
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=cyclone-github&repo=atomic_pwn&theme=gruvbox)](https://github.com/cyclone-github/atomic_pwn/)
+
+[![GitHub issues](https://img.shields.io/github/issues/cyclone-github/atomic_pwn.svg)](https://github.com/cyclone-github/atomic_pwn/issues)
+[![License](https://img.shields.io/github/license/cyclone-github/atomic_pwn.svg)](LICENSE)
+[![GitHub release](https://img.shields.io/github/release/cyclone-github/atomic_pwn.svg)](https://github.com/cyclone-github/atomic_pwn/releases)
+
 # Atomic Vault Extractor & Decryptor
 ### POC tools to extract and decrypt Atomic vault wallets
 _**This tool is proudly the first publicly released Atomic Vault extractor / decryptor.**_
+- Contact me at https://forum.hashpwn.net/user/cyclone if you need help recovering your Atomic wallet password or seed phrase
+
 ### Usage example:
 ```
 ./atomic_decryptor_amd64.bin -h atomic.txt -w wordlist.txt
