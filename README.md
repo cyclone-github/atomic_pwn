@@ -6,7 +6,7 @@
 
 # Atomic Vault Extractor & Decryptor
 ### POC tools to extract and decrypt Atomic vault wallets
-_**This tool is proudly the first publicly released Atomic Vault extractor / decryptor.**_
+_**This toolset is proudly the first publicly released Atomic Vault extractor / decryptor.**_
 - Contact me at https://forum.hashpwn.net/user/cyclone if you need help recovering your Atomic wallet password or seed phrase
 ```
 ./atomic_decryptor_amd64.bin -h atomic.txt -w wordlist.txt
