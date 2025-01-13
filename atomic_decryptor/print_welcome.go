@@ -8,7 +8,7 @@ import (
 
 // version func
 func versionFunc() {
-	fmt.Fprintln(os.Stderr, "Cyclone's Atomic Vault Decryptor v0.2.2-2024-05-02-1600\nhttps://github.com/cyclone-github/atomic_pwn\n")
+	fmt.Fprintln(os.Stderr, "Cyclone's Atomic Vault Decryptor v0.2.3; 2025-01-13\nhttps://github.com/cyclone-github/atomic_pwn\n")
 }
 
 // help func
@@ -18,7 +18,7 @@ func helpFunc() {
 
 -w {wordlist} (omit -w to read from stdin)
 -h {atomic_wallet_hash}
--o {output} (omit -o to write to stdout) (not implemented yet)
+-o {output} (omit -o to write to stdout)
 -t {cpu threads}
 -s {print status every nth sec}
 
@@ -46,7 +46,6 @@ func printWelcomeScreen(vaultFileFlag, wordlistFileFlag *string, validVaultCount
 	fmt.Fprintf(os.Stderr, "Valid Vaults:\t%d\n", validVaultCount)
 	fmt.Fprintf(os.Stderr, "CPU Threads:\t%d\n", numThreads)
 
-	// assume "stdin" if wordlistFileFlag is ""
 	if *wordlistFileFlag == "" {
 		fmt.Fprintf(os.Stderr, "Wordlist:\tReading stdin\n")
 	} else {

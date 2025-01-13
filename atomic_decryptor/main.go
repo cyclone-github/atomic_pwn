@@ -22,10 +22,18 @@ GNU General Public License v2.0
 https://github.com/cyclone-github/atomic_pwn/blob/main/LICENSE
 
 version history
-v0.1.0-2024-04-16; initial release
-v0.2.0-2024-04-17; used multi-threading code from hashgen for 40% performance (alpha)
-v0.2.1-2024-04-18-1200; optimize code for 111% performance gain (process lines as byte, tweak read/write/chan buffers)
-v0.2.2-2024-05-02-1600; refactor code, fix https://github.com/cyclone-github/atomic_pwn/issues/2
+v0.1.0; 2024-04-16
+	initial release
+v0.2.0; 2024-04-17
+	used multi-threading code from hashgen for 40% performance (alpha)
+v0.2.1; 2024-04-18-1200
+	optimize code for 111% performance gain (process lines as byte, tweak read/write/chan buffers)
+v0.2.2; 2024-05-02-1600
+	refactor code
+	fix https://github.com/cyclone-github/atomic_pwn/issues/2
+v0.2.3; 2025-01-13
+	fix https://github.com/cyclone-github/atomic_pwn/issues/5
+	modified codebase to mirror phantom_decryptor
 */
 
 // main func
@@ -64,19 +72,20 @@ func main() {
 		os.Exit(1)
 	}
 
-	// override outputFile since this has not been implemented yet
-	*outputFile = ""
-
 	startTime := time.Now()
 
 	// set CPU threads
 	numThreads := setNumThreads(*threadFlag)
 
-	// channels / variables
-	crackedCountCh := make(chan int, 10)     // buffer of 10 to reduce blocking
-	linesProcessedCh := make(chan int, 1000) // buffer of 1000 to reduce blocking
+	// variables
+	var (
+		crackedCount   int32
+		linesProcessed int32
+		wg             sync.WaitGroup
+	)
+
+	// channels
 	stopChan := make(chan struct{})
-	var wg sync.WaitGroup
 
 	// goroutine to watch for ctrl+c
 	handleGracefulShutdown(stopChan)
@@ -94,12 +103,16 @@ func main() {
 
 	// monitor status of workers
 	wg.Add(1)
-	go monitorPrintStats(crackedCountCh, linesProcessedCh, stopChan, startTime, validVaultCount, &wg, *statsIntervalFlag)
+	go monitorPrintStats(&crackedCount, &linesProcessed, stopChan, startTime, validVaultCount, &wg, *statsIntervalFlag)
 
 	// start the processing logic
-	startProc(*wordlistFileFlag, *outputFile, numThreads, stopChan, vaults, crackedCountCh, linesProcessedCh)
+	startProc(*wordlistFileFlag, *outputFile, numThreads, vaults, &crackedCount, &linesProcessed, stopChan)
 
 	// close stop channel to signal all workers to stop
-	time.Sleep(10 * time.Millisecond)
 	closeStopChannel(stopChan)
+
+	// wait for monitorPrintStats to finish
+	wg.Wait()
 }
+
+// end code

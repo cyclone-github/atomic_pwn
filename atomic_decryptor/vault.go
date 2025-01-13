@@ -15,17 +15,17 @@ import (
 
 // AtomicVault struct
 type Vault struct {
-	EncryptedData []byte // store raw encrypted data
-	Decrypted     bool
+	EncryptedData []byte
+	Hash          string
+	Decrypted     int32
 }
 
 // decryption sanity check
 func isValid(s []byte) bool {
-	// use IndexFunc to find first non-printable char
 	notPrintable := bytes.IndexFunc(s, func(r rune) bool {
-		return r < 32 || r > 126 // printable ASCII range
+		return r < 32 || r > 126
 	})
-	return notPrintable == -1 // if no non-printable characters found, return true
+	return notPrintable == -1
 }
 
 // derives AES key and IV using MD5 and supplied password / salt
@@ -111,24 +111,21 @@ func readVaultData(filePath string) ([]Vault, error) {
 	for scanner.Scan() {
 		line := scanner.Bytes()
 
-		// trim all whitespace from line
 		line = bytes.TrimSpace(line)
 
-		// skip lines that do not start with the expected base64 prefix of encrypted Atomic wallet data
 		if !bytes.HasPrefix(line, prefix) {
 			continue
 		}
 
-		// decode base64
 		decodedData, err := base64.StdEncoding.DecodeString(string(line))
 		if err != nil {
 			fmt.Println("Error decoding base64 data:", err)
 			continue
 		}
 
-		// append decoded data as a new Vault struct
 		vaults = append(vaults, Vault{
 			EncryptedData: decodedData,
+			Hash:          string(line),
 		})
 	}
 

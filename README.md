@@ -8,8 +8,6 @@
 ### POC tools to extract and decrypt Atomic vault wallets
 _**This tool is proudly the first publicly released Atomic Vault extractor / decryptor.**_
 - Contact me at https://forum.hashpwn.net/user/cyclone if you need help recovering your Atomic wallet password or seed phrase
-
-### Usage example:
 ```
 ./atomic_decryptor_amd64.bin -h atomic.txt -w wordlist.txt
  ----------------------------------------------- 
@@ -21,13 +19,33 @@ Vault file:     atomic.txt
 Valid Vaults:   1
 CPU Threads:    16
 Wordlist:       wordlist.txt
-Working...
-
-Decrypted: 0/1  2400342.75 h/s     00h:01m:00s
+2025/01/13 16:49:42 Working...
+Hash: {foobar hash}
+Password: {password}
+Seed Phrase: {decrypted seed phrase}
+2025/01/13 16:49:50 Finished
+2025/01/13 16:49:50 Decrypted: 1/1 1786145.15 h/s 00h:00m:08s
 ```
 
-### Output example:
-If the tool successfully decrypts the vault, tool will print the vault password and decrypted vault.
+### Example Usage:
+```
+-w {wordlist} (omit -w to read from stdin)
+-h {atomic_wallet_hash}
+-o {output} (omit -o to write to stdout)
+-t {cpu threads}
+-s {print status every nth sec}
+
+-version (version info)
+-help (usage instructions)
+
+./atomic_decryptor.bin -h {atomic_wallet_hash} -w {wordlist} -o {output} -t {cpu threads} -s {print status every nth sec}
+
+./atomic_decryptor.bin -h atomic.txt -w wordlist.txt -o cracked.txt -t 16 -s 10
+
+cat wordlist | ./atomic_decryptor.bin -h atomic.txt
+
+./atomic_decryptor.bin -h atomic.txt -w wordlist.txt -o output.txt
+```
 
 ### Credits
 - Many thanks to blandyuk for his help with the AES Key and IV implementation - https://github.com/blandyuk
@@ -48,3 +66,6 @@ If the tool successfully decrypts the vault, tool will print the vault password 
   - `go build -ldflags="-s -w" .`
 - Compile from source code how-to:
   - https://github.com/cyclone-github/scripts/blob/main/intro_to_go.txt
+
+### Changelog:
+* https://github.com/cyclone-github/atomic_pwn/blob/main/CHANGELOG.md
