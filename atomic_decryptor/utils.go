@@ -6,20 +6,24 @@ import (
 	"os/exec"
 	"os/signal"
 	"runtime"
+	"sync/atomic"
 	"syscall"
 )
 
 // clear screen function
 func clearScreen() {
+	var cmd *exec.Cmd
 	switch runtime.GOOS {
 	case "linux", "darwin":
-		cmd := exec.Command("clear")
-		cmd.Stdout = os.Stdout
-		cmd.Run()
+		cmd = exec.Command("clear")
 	case "windows":
-		cmd := exec.Command("cmd", "/c", "cls")
-		cmd.Stdout = os.Stdout
-		cmd.Run()
+		cmd = exec.Command("cmd", "/c", "cls")
+	default:
+		return
+	}
+	cmd.Stdout = os.Stdout
+	if err := cmd.Run(); err != nil {
+		fmt.Fprintln(os.Stderr, "Failed to clear screen:", err)
 	}
 }
 
@@ -39,7 +43,6 @@ func handleGracefulShutdown(stopChan chan struct{}) {
 	go func() {
 		<-interruptChan
 		fmt.Fprintln(os.Stderr, "\nCtrl+C pressed. Shutting down...")
-		//close(stopChan)
 		closeStopChannel(stopChan)
 	}()
 }
@@ -50,4 +53,14 @@ func setNumThreads(userThreads int) int {
 		return runtime.NumCPU()
 	}
 	return userThreads
+}
+
+// check if all vaults are cracked
+func isAllVaultsCracked(vaults []Vault) bool {
+	for i := range vaults {
+		if atomic.LoadInt32(&vaults[i].Decrypted) == 0 {
+			return false
+		}
+	}
+	return true
 }
