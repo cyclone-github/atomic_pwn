@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"strings"
 
 	"github.com/syndtr/goleveldb/leveldb"
 )
@@ -24,7 +25,10 @@ GNU General Public License v2.0
 https://github.com/cyclone-github/atomic_pwn/blob/main/LICENSE
 
 version history
-v0.1.0-2024-04-16; initial release
+v0.1.0-2024-04-16;
+	initial release
+v0.1.1-2025-02-05;
+    added support for hashcat -m 30020
 */
 
 // clear screen function
@@ -43,7 +47,7 @@ func clearScreen() {
 
 // version func
 func versionFunc() {
-	fmt.Fprintln(os.Stderr, "Cyclone's Atomic Vault Extractor v0.1.0-2024-04-16\nhttps://github.com/cyclone-github/atomic_pwn\n")
+	fmt.Fprintln(os.Stderr, "Cyclone's Atomic Vault Extractor v0.1.1-2025-02-05\nhttps://github.com/cyclone-github/atomic_pwn\n")
 }
 
 // help func
@@ -72,22 +76,38 @@ func extractMnemonic(key, value []byte) error {
 		}
 
 		fmt.Printf("Encrypted Mnemonic Seed Phrase:\n%s\n", value)
+		printHashcatHash(value)
 	}
 	return nil
 }
 
-/*
-// wallet data
-func extractWallets(key, value []byte) error {
-	if bytes.Contains(key, []byte("wallets")) {
-		if len(value) == 0 {
-			return errors.New("empty wallet data")
-		}
-		fmt.Printf("Encrypted Wallets:\n%s\n", value)
+func printHashcatHash(encoded []byte) {
+	if len(encoded) > 1 {
+		encoded = encoded[1:]
 	}
-	return nil
+
+	encodedStr := strings.TrimSpace(string(encoded))
+
+	decoded, err := base64.StdEncoding.DecodeString(encodedStr)
+	if err != nil {
+		fmt.Printf("base64 decode error: %v\n", err)
+		return
+	}
+
+	if len(decoded) < 16 {
+		fmt.Println("invalid data length")
+		return
+	}
+
+	saltBytes := decoded[8:16]
+	ciphertextBytes := decoded[16:]
+
+	// print hashcat -m 30020
+	fmt.Println(" ----------------------------------------------------- ")
+	fmt.Println("|                hashcat -m 30020 hash                |")
+	fmt.Println(" ----------------------------------------------------- ")
+	fmt.Printf("$atomic$%x$%x\n", saltBytes, ciphertextBytes)
 }
-*/
 
 // main
 func main() {
@@ -146,12 +166,6 @@ func main() {
 			fmt.Fprintf(os.Stderr, "Error extracting mnemonic: %v\n", err)
 			continue
 		}
-		/*
-			if err := extractWallets(key, value); err != nil {
-				fmt.Fprintf(os.Stderr, "Error extracting wallets: %v\n", err)
-				continue
-			}
-		*/
 	}
 }
 

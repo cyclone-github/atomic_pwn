@@ -8,8 +8,24 @@
 ### POC tools to extract and decrypt Atomic vault wallets
 _**This toolset is proudly the first publicly released Atomic Vault extractor / decryptor.**_
 - Contact me at https://forum.hashpwn.net/user/cyclone if you need help recovering your Atomic wallet password or seed phrase
+### Extractor Example Usage:
 ```
-./atomic_decryptor_amd64.bin -h atomic.txt -w wordlist.txt
+./atomic_extractor.bin atomic_dir/
+ ---------------------------------------------------- 
+|        Cyclone's Atomic Vault Hash Extractor       |
+|        Use Atomic Vault Decryptor to decrypt       |
+|    https://github.com/cyclone-github/atomic_pwn    |
+ ---------------------------------------------------- 
+Encrypted Mnemonic Seed Phrase:
+{atomic_salt_ciphertext}
+ ----------------------------------------------------- 
+|                hashcat -m 30020 hash                |
+ ----------------------------------------------------- 
+$atomic${salt}${ciphertext}
+```
+### Decryptor Example Usage:
+```
+./atomic_decryptor.bin -h atomic.txt -w wordlist.txt
  ----------------------------------------------- 
 |       Cyclone's Atomic Vault Decryptor       |
 | https://github.com/cyclone-github/atomic_pwn |
@@ -27,7 +43,6 @@ Seed Phrase: {decrypted seed phrase}
 2025/01/13 16:49:50 Decrypted: 1/1 1786145.15 h/s 00h:00m:08s
 ```
 
-### Example Usage:
 ```
 -w {wordlist} (omit -w to read from stdin)
 -h {atomic_wallet_hash}
