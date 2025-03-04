@@ -8,6 +8,12 @@
 ### POC tools to extract and decrypt Atomic vault wallets
 _**This toolset is proudly the first publicly released Atomic Vault extractor / decryptor.**_
 - Contact me at https://forum.hashpwn.net/user/cyclone if you need help recovering your Atomic wallet password or seed phrase
+
+### Atomic vault location:
+- Linux: `/home/$USER/.config/atomic/Local\ Storage/leveldb/`
+- Mac: `~/Library/Application Support/atomic/Local Storage/leveldb/`
+- Windows: `C:\Users\$USER\AppData\Roaming\atomic\Local Storage\leveldb\`
+
 ### Extractor Example Usage:
 ```
 ./atomic_extractor.bin atomic_dir/
