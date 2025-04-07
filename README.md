@@ -8,6 +8,7 @@
 ### POC tools to extract and decrypt Atomic vault wallets
 _**This toolset is proudly the first publicly released Atomic Vault extractor / decryptor.**_
 - Contact me at https://forum.hashpwn.net/user/cyclone if you need help recovering your Atomic wallet password or seed phrase
+- Note: atomic_extractor supports hashcat mode 30020 for convenience, but this is a third-party module that is not affiliated with or included in the official hashcat beta or release builds at https://github.com/hashcat/hashcat
 
 ### Atomic vault location:
 - Linux: `/home/$USER/.config/atomic/Local\ Storage/leveldb/`
@@ -74,17 +75,19 @@ cat wordlist | ./atomic_decryptor.bin -h atomic.txt
 ### Compile from source:
 - If you want the latest features, compiling from source is the best option since the release version may run several revisions behind the source code.
 - This assumes you have Go and Git installed
-  - `git clone https://github.com/cyclone-github/atomic_pwn.git`
+  - `git clone https://github.com/cyclone-github/atomic_pwn.git` # clone repo
   - atomic_extractor
-  - `cd atomic_pwn/atomic_extractor`
-  - `go mod init atomic_extractor`
-  - `go mod tidy`
-  - `go build -ldflags="-s -w" .`
+  - `cd atomic_pwn/atomic_extractor`                           # enter project directory
+  - `go mod init atomic_extractor`                             # initialize Go module (skips if go.mod exists)
+  - `go mod tidy`                                              # download dependencies
+  - `go build -ldflags="-s -w" .`                              # compile binary in current directory
+  - `go install -ldflags="-s -w" .`                            # compile binary and install to $GOPATH
   - atomic_decryptor
-  - `cd atomic_pwn/atomic_decryptor`
-  - `go mod init atomic_decryptor`
-  - `go mod tidy`
-  - `go build -ldflags="-s -w" .`
+  - `cd atomic_pwn/atomic_decryptor`                           # enter project directory
+  - `go mod init atomic_decryptor`                             # initialize Go module (skips if go.mod exists)
+  - `go mod tidy`                                              # download dependencies
+  - `go build -ldflags="-s -w" .`                              # compile binary in current directory
+  - `go install -ldflags="-s -w" .`                            # compile binary and install to $GOPATH
 - Compile from source code how-to:
   - https://github.com/cyclone-github/scripts/blob/main/intro_to_go.txt
 
