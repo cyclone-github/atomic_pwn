@@ -1,7 +1,7 @@
 module atomic_extractor
 
-go 1.23.4
+go 1.25.2
 
 require github.com/syndtr/goleveldb v1.0.0
 
-require github.com/golang/snappy v0.0.4 // indirect
+require github.com/golang/snappy v1.0.0 // indirect
