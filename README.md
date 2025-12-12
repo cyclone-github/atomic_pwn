@@ -1,4 +1,4 @@
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=cyclone-github&repo=atomic_pwn&theme=gruvbox)](https://github.com/cyclone-github/atomic_pwn/)
+[![Readme Card](https://github-readme-stats-fast.vercel.app/api/pin/?username=cyclone-github&repo=atomic_pwn&theme=gruvbox)](https://github.com/cyclone-github/atomic_pwn/)
 
 [![GitHub issues](https://img.shields.io/github/issues/cyclone-github/atomic_pwn.svg)](https://github.com/cyclone-github/atomic_pwn/issues)
 [![License](https://img.shields.io/github/license/cyclone-github/atomic_pwn.svg)](LICENSE)
@@ -71,6 +71,15 @@ cat wordlist | ./atomic_decryptor.bin -h atomic.txt
 
 ### Credits
 - Many thanks to blandyuk for his help with the AES Key and IV implementation - https://github.com/blandyuk
+
+### Install atomic_extractor:
+```
+go install github.com/cyclone-github/atomic_pwn/atomic_extractor@main
+```
+### Install atomic_decryptor:
+```
+go install github.com/cyclone-github/atomic_pwn/atomic_decryptor@main
+```
 
 ### Compile from source:
 - If you want the latest features, compiling from source is the best option since the release version may run several revisions behind the source code.

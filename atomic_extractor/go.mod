@@ -1,4 +1,4 @@
-module atomic_extractor
+module github.com/cyclone-github/atomic_pwn/atomic_extractor
 
 go 1.25.2
 
